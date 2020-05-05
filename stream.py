@@ -29,7 +29,7 @@ st.markdown('<style>section.main{background-image:url(https://static.ellitoral.c
 
 
 st.write(
-      '<h1 class="titulo">Pedite un Taxi...</h3>',
+      '<h1 class="titulo">PEDI UN TAXI...</h3>',
       unsafe_allow_html=True
   )
 st.markdown('<style>h1.titulo{color: #323404;margin-bottom:0;padding:0;text-align:center;}</style>', unsafe_allow_html=True)
