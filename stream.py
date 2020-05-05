@@ -3,13 +3,37 @@ import streamlit as st
 
 
 
-st.markdown('<style>div.block-container{background:#edf19b;opacity:.9;text-align:center;}</style>', unsafe_allow_html=True)
+
+import smtplib 
+from email.mime.text import MIMEText 
+
+conectado=1
+if conectado==1:
+	emisor = "baqueroemanuel@gmail.com" 
+	receptor = "andrea68segovia@gmail.com"     
+	# Nos conectamos al servidor SMTP de Gmail 
+
+	serverSMTP = smtplib.SMTP('smtp.gmail.com',587) 
+	serverSMTP.ehlo() 
+	serverSMTP.starttls() 
+	serverSMTP.ehlo() 
+	serverSMTP.login(emisor,"Manaco201296,.")
+conectado=0
+
+
+
+
+st.markdown('<style>.st-bm{padding-top:7%;background:#ffee3a;}</style>', unsafe_allow_html=True)
+
+
+
+st.markdown('<style>div.block-container{background:white;opacity:.98;text-align:center;}</style>', unsafe_allow_html=True)
 
 
 
 
 
-st.markdown('<style>section.main{background-image:url(https://static.ellitoral.com/um/fotos/191877_1.jpg)}</style>', unsafe_allow_html=True)
+st.markdown('<style>section.main{background-size: cover;background-image: url(https://p4.wallpaperbetter.com/wallpaper/929/1017/70/city-lights-bokeh-lights-blurred-blurry-wallpaper-preview.jpg);}</style>', unsafe_allow_html=True)
 
 
 #st.markdown('<style>section.main{background:#c8cc7d}</style>', unsafe_allow_html=True)
@@ -32,7 +56,7 @@ st.write(
       '<h1 class="titulo">PEDI UN TAXI...</h3>',
       unsafe_allow_html=True
   )
-st.markdown('<style>h1.titulo{color: #323404;margin-bottom:0;padding:0;text-align:center;}</style>', unsafe_allow_html=True)
+st.markdown('<style>h1.titulo{color: #323404;margin-bottom:0;padding:0;text-align:center;}h1.titulo:hover{color:#ffee3a}</style>', unsafe_allow_html=True)
 
 
 
@@ -82,6 +106,15 @@ hist = pd.read_csv('pedidos.csv',sep='|')
 validar = (hist.telefono.astype(str).str.contains('^'+var_numero_contacto+'$',regex=True)).value_counts().shape[0]
 
 
+
+
+# Configuracion del mail 
+mensaje = MIMEText("Se ha registrado un nuevo Pasajero\n\n: "+var_nombre_completo+"\n\nContacto: "+var_numero_contacto+"\n\nSalida: "+var_salida+"\n\nDestino: "+var_destino) 
+mensaje['From']=emisor 
+mensaje['To']=receptor 
+mensaje['Subject']="Nuevo Pasajero TAXI"     
+
+
 if st.button('Hacer Pedido de Taxi'):
 	if var_numero_contacto != '':
 		if validar == 1:
@@ -95,6 +128,12 @@ if st.button('Hacer Pedido de Taxi'):
 			st.write('<h3 class="pedido_confirmado">Buenisimo, se ha cargado su pedido, Espere a ser contactado</h3>',unsafe_allow_html=True)
 			st.	markdown('<style>h3.pedido_confirmado{color:black;font-size=3em;margin:0;padding:0;}</style>', unsafe_allow_html=True)
 	
+			# Enviamos el mensaje 
+			serverSMTP.sendmail(emisor,receptor,mensaje.as_string()) 
+			# Cerramos la conexion 
+			serverSMTP.close()
+
+
 		else:
 			st.write('<h3 class="no_ingreso_telefono">Ya ha cargado su pedido, Espere a ser contactado</h3>',unsafe_allow_html=True)
 			st.	markdown('<style>h3.no_ingreso_telefono{margin:0;padding:0;}</style>', unsafe_allow_html=True)
