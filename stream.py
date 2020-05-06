@@ -81,8 +81,8 @@ st.write(
   )
 st.markdown('<style>h3.numero_contacto{color: #323404;margin:0;padding:0;text-align:center;}</style>', unsafe_allow_html=True)
 
-var_numero_contacto = st.text_input('  ')
 
+var_numero_contacto = st.text_input('  ')
 
 
 
@@ -91,6 +91,8 @@ st.write(
       unsafe_allow_html=True
   )
 st.markdown('<style>h3.parte_de{margin:0;padding:0;text-align:center;}</style>', unsafe_allow_html=True)
+
+
 
 var_salida = st.text_input('      ')
 
@@ -104,8 +106,6 @@ st.markdown('<style>h3.parte_de{margin:0;padding:0;text-align:center;}</style>',
 
 var_destino = st.text_input('    ')
 
-hist = pd.read_csv('pedidos.csv',sep='|')
-validar = (hist.telefono.astype(str).str.contains('^'+var_numero_contacto+'$',regex=True)).value_counts().shape[0]
 
 
 
@@ -119,13 +119,6 @@ mensaje['Subject']="Nuevo Pasajero TAXI"
 
 if st.button('Hacer Pedido de Taxi'):
 	if var_numero_contacto != '':
-		if validar == 1:
-			df_nuevos = pd.DataFrame({'nombre_completo':pd.Series(var_nombre_completo), 'telefono':pd.Series(var_numero_contacto),'salida':pd.Series(var_salida),'destino':pd.Series(var_destino)})
-			df_historial = pd.read_csv('pedidos.csv',sep='|')
-			df_historial = df_historial.iloc[:,1:]
-			df_salida = pd.concat([df_historial,df_nuevos],axis=0)
-			df_salida = df_salida.iloc[:,1:]
-			df_salida.to_csv('pedidos.csv',sep='|')
 
 			st.write('<h3 class="pedido_confirmado">Buenisimo, se ha cargado su pedido, Espere a ser contactado</h3>',unsafe_allow_html=True)
 			st.	markdown('<style>h3.pedido_confirmado{color:black;font-size=3em;margin:0;padding:0;}</style>', unsafe_allow_html=True)
@@ -134,11 +127,6 @@ if st.button('Hacer Pedido de Taxi'):
 			serverSMTP.sendmail(emisor,receptor,mensaje.as_string()) 
 			# Cerramos la conexion 
 			serverSMTP.close()
-
-
-		else:
-			st.write('<h3 class="no_ingreso_telefono">Ya ha cargado su pedido, Espere a ser contactado</h3>',unsafe_allow_html=True)
-			st.	markdown('<style>h3.no_ingreso_telefono{margin:0;padding:0;}</style>', unsafe_allow_html=True)
 	else:
 		st.write(
       	'<h3 class="no_ingreso_telefono">Error, Numero de telefono no ingresado...</h3>',unsafe_allow_html=True)
