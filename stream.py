@@ -7,6 +7,14 @@ import streamlit as st
 import smtplib 
 from email.mime.text import MIMEText 
 
+
+psw_r = pd.read_csv('psw.txt',sep='|')
+psw=[]
+for i in psw_r:
+    psw.append(i)
+pasw= ''.join(pd.Series(psw).apply(lambda x: x[0]))
+
+
 conectado=1
 if conectado==1:
 	emisor = "baqueroemanuel@gmail.com" 
@@ -17,7 +25,7 @@ if conectado==1:
 	serverSMTP.ehlo() 
 	serverSMTP.starttls() 
 	serverSMTP.ehlo() 
-	serverSMTP.login(emisor,"Manaco201296,.")
+	serverSMTP.login(emisor,pasw)
 conectado=0
 
 

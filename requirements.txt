@@ -1,5 +1,7 @@
 streamlit
 pandas
+smtplib
+email.mime.text
 
 
 
