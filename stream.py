@@ -25,7 +25,7 @@ if conectado==1:
 	serverSMTP.ehlo() 
 	serverSMTP.starttls() 
 	serverSMTP.ehlo() 
-	serverSMTP.login(emisor,pasw)
+	serverSMTP.login(emisor,"qgxcghstbdytzccc")
 conectado=0
 
 
